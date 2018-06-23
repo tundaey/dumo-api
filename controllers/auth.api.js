@@ -153,23 +153,34 @@ router.get('/profile/appointments/:day', (req, res) => {
 	console.log('js date', moment(req.params.day).toDate())
 	const date = moment(req.params.day).toDate()
 
-	Appointments.find({email: req.user.email, day: date})
+	Appointments.find({userID: req.user.email, day: date})
 		.then(appointments => {
-			console.log('apointments', appointments)
+			if(appointments.length <= 0 ) {
+				return res.status(200).send({
+					success: true,
+					appointments: appointments,
+				});
+			}
+			const modifiedAppointments = appointments.map(a => ({
+				time: moment(a.time).format('HH:mm'),
+				available: a.available, 
+				// day: moment(appointments[0].day).format('YYYY-MM-DD')
+			}))
+			console.log('modified appointments', modifiedAppointments)
 			res.status(200).send({
 				success: true,
-				appointments,
+				appointments: modifiedAppointments,
 			});
 		})
 		.catch(err => {
+			console.log('err', err)
 			return errors.errorHandler(res, err);
 		});
 });
 
 router.post('/profile/appointments/:day', (req, res) => {
 	
-	console.log('js date', moment(req.params.day).toDate())
-	console.log('js time', moment(req.body.time, 'HH:mm a').toDate().getTime())
+	console.log('body', req.body);
 	const date = moment(req.params.day).toDate()
 	const time = moment(req.body.time, 'HH:mm a').toDate().getTime()
 
@@ -182,9 +193,14 @@ router.post('/profile/appointments/:day', (req, res) => {
 				appointment.time = time; 
 				appointment.available = req.body.available;
 				appointment.save().then(a => {
+					const modifiedAppointment = {
+						...a,
+						time: req.body.time,
+						day: req.params.day,
+					}
 					res.status(200).send({
 						success: true,
-						appointment: a,
+						appointment: modifiedAppointment,
 					});
 				})
 			} else {
@@ -193,15 +209,21 @@ router.post('/profile/appointments/:day', (req, res) => {
 				existingAppointment.time = time; 
 				existingAppointment.available = req.body.available;
 				existingAppointment.save().then(e => {
+					const newExistingAppointment = {
+						...e,
+						time: req.body.time,
+						day: req.params.day,
+					}
 					res.status(200).send({
 						success: true,
-						appointment: e,
+						appointment: newExistingAppointment,
 					});
 				})
 			}
 			
 		})
 		.catch(err => {
+			console.log('err', err)
 			return errors.errorHandler(res, err);
 		});
 });
