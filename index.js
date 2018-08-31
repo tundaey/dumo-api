@@ -71,3 +71,4 @@ app.set('socketio', io);
 //Status monitor uses it's own socket.io instance by default, so we need to
 //pass our instance as a parameter else it will throw errors on client side
 app.use(expressStatusMonitor({ websocket: io, port: app.get('port') }));
+module.exports = server

@@ -3,9 +3,11 @@ const Schema = mongoose.Schema;
 
 const appointmentSchema = new Schema({
 	userID: String,
-  day: { type: Date },
-  time: { type: Date },
-  available: { type: Boolean}
+  day: { type: String },
+  from: { type: String },
+  to: { type: String },
+  available: { type: Boolean},
+  bookings: [{ type: Schema.Types.ObjectId, ref: 'Booking' }]
 });
 
 const Appointment = mongoose.model(

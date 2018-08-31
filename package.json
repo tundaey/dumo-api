@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/mocha/bin/mocha",
     "start": "node index.js",
     "server": "nodemon index.js",
     "db": "mongod --dbpath /usr/local/var/mongodb/ --rest"
@@ -14,6 +14,8 @@
   "dependencies": {
     "bcrypt": "",
     "body-parser": "1.17.2",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "chalk": "2.4.1",
     "compression": "1.7.0",
     "cors": "2.8.3",
@@ -27,12 +29,14 @@
     "jsonwebtoken": "7.4.1",
     "lodash": "4.17.4",
     "lusca": "1.5.1",
+    "mocha": "^5.2.0",
     "moment": "^2.22.2",
     "mongodb": "2.2.27",
     "mongoose": "4.10.8",
     "morgan": "1.8.2",
     "path": "0.12.7",
     "request": "2.81.0",
-    "socket.io": "2.0.3"
+    "socket.io": "2.0.3",
+    "stripe": "^6.7.0"
   }
 }

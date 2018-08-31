@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const usersSchema = new Schema({
 	first: String,
+	customer_id: String,
 	last: String,
 	email: String,
 	password: String,
@@ -16,6 +17,7 @@ const usersSchema = new Schema({
 	last_name: String,
 	nickname: String,
 	phone: String,
+	sessions: {default: 0, type: Number },
 });
 
 const Users = mongoose.model('Users', usersSchema, 'Users');
