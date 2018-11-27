@@ -379,6 +379,24 @@ router.get('/bookings', async (req, res) => {
 	}
 })
 
+router.post('/bookings/accept', async (req, res) => {
+	try {
+		const booking = await Booking.findOneAndUpdate(
+			{ _id: req.body }, 
+			{ status: 'accepted'},
+			//{safe: true, upsert: true, new : true},
+		)
+		return res.status(200).send({
+			success: true,
+			booking,
+		});
+	} catch (error) {
+		return res.status(401).send({
+			success: false
+		})
+	}
+})
+
 const chargeCustomer = async (customer_id) => {
 	 // Charge the Customer instead of the card:
 	const charge = await stripe.charges.create({
